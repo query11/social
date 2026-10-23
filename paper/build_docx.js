@@ -1,6 +1,6 @@
 // 把 draft.md 排版成符合课程“技术规范”的 Word 文件：
 // A4；标题小二黑体；姓名学号小四仿宋；正文小四宋体；全文 1.5 倍行距；脚注注释，无文末参考文献。
-// 用法：node paper/build_docx.js [输出路径]
+// 用法：node paper/build_docx.js <稿件.md> [输出路径]，默认输出为同目录下“<标题>（初稿）.docx”
 const fs = require("fs");
 const path = require("path");
 const {
@@ -8,8 +8,8 @@ const {
   PageNumber, AlignmentType, LineRuleType,
 } = require("docx");
 
-const SRC = path.join(__dirname, "draft.md");
-const OUT = process.argv[2] || path.join(__dirname, "量化评价与现代人的生活困境（初稿）.docx");
+const SRC = process.argv[2];
+if (!SRC) throw new Error("用法：node paper/build_docx.js <稿件.md> [输出路径]");
 
 // 字号（半磅）：小二 18pt、四号 14pt、小四 12pt、小五 9pt
 const SIZE = { xiaoEr: 36, siHao: 28, xiaoSi: 24, xiaoWu: 18 };
@@ -34,6 +34,8 @@ function inlineRuns(text, eastAsia, size) {
 }
 
 const lines = fs.readFileSync(SRC, "utf8").split(/\r?\n/);
+const title = lines.find((l) => l.startsWith("# ")).slice(2).trim();
+const OUT = process.argv[3] || path.join(path.dirname(SRC), `${title}（初稿）.docx`);
 const footnotes = {};
 for (const l of lines) {
   const m = l.match(/^\[\^(\d+)\]:\s*(.+)$/);
