@@ -125,10 +125,10 @@ const doc = new Document({
   }],
 });
 
-// docx-js 不支持脚注编号格式，打包后补上：①②③ 编号、每页重新编号（中文期刊常用脚注格式）
+// docx-js 不支持脚注编号格式，打包后补上：①②③ 编号、全文连续编号
 const JSZip = require(require.resolve("jszip", { paths: [require.resolve("docx")] }));
 const FOOTNOTE_PR =
-  '<w:footnotePr><w:numFmt w:val="decimalEnclosedCircleChinese"/><w:numRestart w:val="eachPage"/></w:footnotePr>';
+  '<w:footnotePr><w:numFmt w:val="decimalEnclosedCircleChinese"/><w:numRestart w:val="continuous"/></w:footnotePr>';
 
 Packer.toBuffer(doc)
   .then(JSZip.loadAsync)
