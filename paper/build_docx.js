@@ -101,7 +101,7 @@ const doc = new Document({
       },
       footnoteText: {
         run: { font: font("宋体"), size: SIZE.xiaoWu },
-        paragraph: { spacing: { line: 240, lineRule: LineRuleType.AUTO } },
+        paragraph: { spacing: LINE_1_5 }, // 规范要求全文 1.5 倍行距，脚注也不例外
       },
     },
   },
